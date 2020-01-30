@@ -16,12 +16,12 @@ import java.net.URL;
 
 public class fetchData extends AsyncTask<Void,Void,Void> {
     String data = "";
+    String link = "https://api.github.com/search/users?q=user:";
     String search = MainActivity.key;
-    String match = "";
     @Override
     protected Void doInBackground(Void... voids) {
         try {
-            URL url = new URL("https://api.myjson.com/bins/nbowe");
+            URL url = new URL("link+search");
             HttpURLConnection httpurlconnection = (HttpURLConnection) url.openConnection();
             InputStream inputstream = httpurlconnection.getInputStream();
             BufferedReader bufferedreader = new BufferedReader(new InputStreamReader(inputstream));
@@ -30,41 +30,24 @@ public class fetchData extends AsyncTask<Void,Void,Void> {
                 line = bufferedreader.readLine();
                 data = data + line;
             }
-            JSONArray jsonarray = new JSONArray(data);
-            for(int i=0;i<jsonarray.length();i++)
-            {
-                JSONObject jo = (JSONObject)jsonarray.get(i);
-                if(jo.get("name").equals(search))
-                {
-                    match = match + "Name: " + jo.get("name") + "\n" +
-                            "Address: " + jo.get("address") + "\n" +
-                            "Contact: " + jo.get("contact") + "\n" +
-                            "Password: " + jo.get("password") + "\n";
-                }
-            }
-
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
+        } 
         return null;
     }
     @Override
     protected void onPostExecute(Void aVoid){
         super.onPostExecute(aVoid);
         MainActivity.button.setText("Search Again");
-        if(match == "")
+        if(data == "")
         {
             MainActivity.text.setText("User Not Found");
         }
         else
         {
-            MainActivity.text.setText(match);
+            MainActivity.text.setText(this.data);
         }
     }
 }
